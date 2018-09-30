@@ -1,0 +1,23 @@
+#!/bin/sh
+
+#$ -N Particles
+#$ -cwd
+#$ -S /bin/sh
+#$ -pe openmpi* 16
+#$ -l dedicated=4
+
+cd /data/cosc462web/zberardo/parallelProg14/test
+module load openmpi/1.4.3-intel-psm
+pgmprefix="image"
+dataprefix="timestep"
+timesteps=300;
+hosts=16
+threads=16
+echo -n > mpi.$hosts.txt
+mkdir /tmp/zberardo-particle;
+for((i = 0; i < 5; i++))
+do {
+mpirun -n $hosts /data/cosc462web/zberardo/parallelProg14/src/particleSimulator-mpi input bob dt 0.01 numSteps $timesteps output /tmp/zberardo-particle/$dataprefix threads $threads time 1 >> mpi.$hosts.txt
+
+}
+done

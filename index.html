@@ -1,0 +1,250 @@
+<!doctype html>
+
+<!--[if IE 6]><html lang="en" class="no-js ie6"><![endif]-->
+<!--[if (gt IE 6)|!(IE)]><!--><html lang="en" class="no-js"><!--<![endif]-->
+	<head>
+		<title>Particle Simulator</title>
+		<meta name="description" content="Particle Simulator">
+			<meta name="author" content="Zachary Berardo">
+				<style>
+					body {
+						width:1024px;
+						margin: 0 auto;
+						text-align: left;
+					}
+					@-webkit-keyframes slidein {
+						from {
+							margin-left: -200%;
+							-webkit-animation-timing-function: ease-out;
+							text-shadow: #aaa 0px 0px 0px;
+						}
+						50% {
+							margin-left 0%;
+							-webkit-animation-timing-function: ease-out;
+							text-shadow: #aaa 2px 1px 2px;
+						}
+						to {
+							margin-left 100%;
+							-webkit-animation-timing-function: ease-out;
+							text-shadow: #aaa 5px 1px 5px;
+						}
+					}
+					h2 {
+						text-align: center;
+						-webkit-animation: slidein 1s linear;
+						text-shadow: #aaa 5px 1px 5px;
+					}
+					div.graph {
+						text-align: center;
+					}
+					div.boxed {
+						border: 3px solid #A7A690;
+						padding: 10px;
+						overflow: hidden;
+					}
+					div.bolded {
+						font-weight: bold;
+						text-align: center;
+					}
+					td {
+						font-weight: bold;
+					}
+					</style>
+				<!--[if lt IE 9]>
+				 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+				 <![endif]-->
+				</head>
+
+	<body>
+		<header>
+			<h2>Particle Simulator</h2>
+		</header>
+		<div id="main">
+			<section>
+
+				<object type="application/x-shockwave-flash" data="http://releases.flowplayer.org/swf/flowplayer-3.2.1.swf" width="1024" height="576">
+					<param name="movie" value="http://releases.flowplayer.org/swf/flowplayer-3.2.1.swf" />
+					<param name="allowFullScreen" value="true" />
+					<param name="wmode" value="transparent" />
+					<param name="flashVars" value="config={'playlist':['test%2Fframe.jpg',{'url':'test%2Fparticles.mp4','autoPlay':false}]}" />
+					<img alt="Particle Simulation Example" src="test/frame.jpg" width="1024" height="576" title="No video playback capabilities, please download the video below" />
+				</object>
+
+				<p>
+				<strong>Download video:</strong> <a href="test/particles.mp4">MP4 format</a>
+				</p>
+				<br /><br />
+				<div class="boxed">
+					This particle simulator simulates gradational force each particle has on another. The results will be a stellar surprise. There are 3 different versions of this program. A serial version and two parallel versions sporting Open MPI and OpenMP support respectively are included.
+					<br />
+					<div class=bolded>Requirements: ffmpeg and gcc 4.4.6 or later </div>
+					There is a makefile setup to easily demonstrate this program, but a few variables must be setup correctly.
+					<br />
+					<br />
+					In the test directory, there is a script for omp, mpi, and a script for serial processing. Each script has two variables that need to be set along with other options such as threads and color/grayscale. Edit your path and home directory in the respective script to make sure it runs without a hitch. Once done type:
+					<br />
+					<br />
+					<div>
+						<table style="margin: auto;">
+							<colgroup>
+								<col span="1" style="width: 200px;">
+								<col span="1" style="width: 200px;">
+							</colgroup>
+							<tr>
+								<td>make</td>
+								<td>compiles all programs</td>
+							</tr>
+							<tr>
+								<td>make simulation</td>
+								<td>for serial processing</td>
+							</tr>
+							<tr>
+								<td>make simulation-omp</td>
+								<td>for openMP processing</td>
+							</tr>
+							<tr>
+								<td>make simulation-mpi</td>
+								<td>for Open MPI processing</td>
+							</tr>
+						</table>
+					</div>
+					<br />
+					The programs may also be run independently of the scripts if you want more control.
+					<br />
+					<br />
+					The OpenMP and MPI version have the following usage.
+					<br />
+					<br />
+					<div class="bolded">
+						particleSimulator-omp input [file] dt [0 &#60; x &#60; 1] numSteps [1|2|...] output [file] threads [1|2|...]  time [0|1]
+						<br />
+						particleSimulator-mpi input [file] dt [0 &#60; x &#60; 1] numSteps [1|2|...] output [file] threads [1|2|...] time [0|1]
+					</div>
+					<br />
+					The serial version has the following usage.
+					<br />
+					<br />
+					<div class="bolded">
+						particleSimulator-serial input [file] dt [0 &#60; x &#60; 1] numSteps [1|2|...] output [file] time [0|1]
+					</div>
+					<br />
+					If you want to time the processing, just put a one for time, and if not, just put a 0.
+					<br />
+					The dt argument accepts doubles, and numsteps, threads and time accept ints.
+					<br />
+					The input file must be in the following format:
+					<br />
+					<div class="bolded">
+						[X Position] [Y Position] [X Velocity] [Y Velocity] [Particle Mass]
+						<br />
+						0.533480 0.309789 -0.021902 0.787174 1.719489
+					</div>
+					Both Position and Velocity must be between -1 and 1 and the mass can be anything above 0, preferably a low number below 10. The gravitional constant is not tuned for large numbers.
+					The output generated will look exactly like the input.
+					<br />
+					<br />
+					<br />
+					There are three helper programs included in this release.
+					<br />
+					ParticleToPgm: which converts the particles into a grayscale PGM image to be used with ffmpeg or to create a jpg image.
+					<br />
+					<div class="bolded">
+						particleToPgm input [file] xmin -1 xmax 1 ymin -1 ymax 1 xres 1280 yres 720 output [file]
+					</div>
+					ParticleToPpm: which converts the particles into a color PPM image to be used with ffmpeg or to create a jpg image.
+					<br />
+					<div class="bolded">
+						particleToPpm input [file] xmin -1 xmax 1 ymin -1 ymax 1 xres 1280 yres 720 output [file]
+					</div>
+					ParticleMaker: which creates a certain number of Particles and prints in "particle.01.data"
+					<div class="bolded">
+						particlemaker [# of particles]
+					</div>
+
+
+
+				</div>
+				<br />
+				<div class="bolded">
+					Each test used 300 timesteps.
+				</div>
+				<figure>
+					<div class="graph"><a href="test/timingPlot.png"><img src="test/timingPlot.png" width="640" height="480" ></a></div>
+					<figcaption>
+						These tests used 48 processors on chi in the Newton Cluster. There was not a upward slope in time with even up to 512 threads with 48 processors. Since the processing amount per thread decreases as more threads are added, ideally there would be a increase in time, but this seems not to be the case. The fastest average time was about 71.9 seconds processing 10,000 particles.
+					</figcaption>
+				</figure>
+				<figure>
+					<div class="graph"><a href="test/timingmpiPlot.png"><img src="test/timingmpiPlot.png" width="640" height="480" ></a></div>
+					<figcaption>
+						These test takes advantage of Open MPI for the processing. In these results, up to 16 processes were ran with each having 16 threads. In comparison with OpenMP, processing time was increased in all respects. There was a huge performance increase with 2 and 4 processes which was about 34.6 seconds. These tests do show a upward sloping graph as more processes are added due to the Open MPI overhead with each process getting a smaller particle amount.
+					</figcaption>
+				</figure>
+			</section>
+
+		</div>
+		<h2>Acknowledgements</h2>
+		<div class="boxed">
+			plotScript.gnu and parseFlags
+			<br />
+			This gnuplot script, used to create the graphs, and parseFlags were written by Dr. David Banks. Permission to use in this assignment was given. The documents can be found at
+			<a href="https://docs.google.com/document/d/1f3dwU3P2Jg8Fd6QiE7_0aGHt_wHHS14z1C7XOiN2mLk/">https://docs.google.com/document/d/1f3dwU3P2Jg8Fd6QiE7_0aGHt_wHHS14z1C7XOiN2mLk/</a>
+			<br />
+			<br />
+			<a href="http://en.wikipedia.org/wiki/Midpoint_circle_algorithm">Midpoint Circle Algorithm</a> was used in the creation of a PPM or PGM image.
+
+
+		</div>
+		<br />
+		<br />
+		<footer>
+			Download Tarball:  <a href="particles.tgz">particles.tgz</a>
+			<br />
+			<br />
+		</footer>
+		<section>
+			<!-- <h2>You made it to the special feature!</h2> -->
+			<br />
+			<br />
+			<div class="boxed">
+			Included in this release is a special version of the openMP program that instead of accepting a double as an argument for dt, it accepts a file. This file follows this format:
+				<div class="bolded">
+					0 .01
+					<br />
+					50 .001
+					<br />
+					100 .0005
+					<br />
+					150 .001
+					<br />
+				</div>
+			The first number of the line is an int of the timestep you want the dt to change. The second number is the dt you want to be set for that timestep and beyond.
+				<br />
+				This version has the following usage:
+				<div class="bolded">
+					particleSimulator-special input [file] dt [file] numSteps [1|2|...] output [file] threads [1|2|...]  time [0|1]
+				</div>
+				<br />
+				The makfile is setup to work with the simulation as well. First you must change the variables, as above. The script also uses the dt file in "dt.txt", so make sure you make that file with the dt adjustments. Once finished type:
+				<div class="bolded">
+					make simulation-special
+				</div>
+
+			</div>
+			<br />
+			<object type="application/x-shockwave-flash" data="http://releases.flowplayer.org/swf/flowplayer-3.2.1.swf" width="1024" height="576">
+				<param name="movie" value="http://releases.flowplayer.org/swf/flowplayer-3.2.1.swf" />
+				<param name="allowFullScreen" value="true" />
+				<param name="wmode" value="transparent" />
+				<param name="flashVars" value="config={'playlist':['test%2Fframe2.jpg',{'url':'test%2Fparticles2.mp4','autoPlay':false}]}" />
+				<img alt="Particle Simulation Example" src="test/frame2.jpg" width="1024" height="576" title="No video playback capabilities, please download the video below" />
+			</object>
+		</section>
+		<p>
+		<strong>Download video:</strong> <a href="test/particles2.mp4">MP4 format</a>
+		</p>
+		<br />
+		<br />
+
+	</body>
+</html>

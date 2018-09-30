@@ -1,0 +1,4 @@
+plotScript.gnu and parseFlags 
+This gnuplot script, used to create the graphs, and parseFlags were written by Dr. David Banks. Permission to use in this assignment was given. The documents can be found at https://docs.google.com/document/d/1f3dwU3P2Jg8Fd6QiE7_0aGHt_wHHS14z1C7XOiN2mLk/ 
+
+Midpoint Circle Algorithm was used in the creation of a PPM or PGM image.
